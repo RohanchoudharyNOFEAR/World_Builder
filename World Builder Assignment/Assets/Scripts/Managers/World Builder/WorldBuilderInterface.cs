@@ -24,9 +24,12 @@ namespace WorldBuilder
 
         public GameObject inventoryPanel;
         public GameObject selectionPanel;
+        public GameObject PlacementPanel;
         [SerializeField] private Toggle gridToggle;
         [SerializeField] private Material[] materials;
 
+        [Header("Touch")]
+        private bool toPlace = false;
 
 
         void Update()
@@ -45,32 +48,108 @@ namespace WorldBuilder
                 {
                     pendingObject.transform.position = pos;
                 }
-                if (Input.GetMouseButtonDown(0) && canPlace)
-                {
-                    PlaceObject();
-                }
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    RotateObject();
-                }
+                //if (Input.GetMouseButtonDown(0) && canPlace)
+                //{
+                //    PlaceObject();
+                //}
+                //if (Input.GetKeyDown(KeyCode.R))
+                //{
+                //    RotateObject();
+                //}
                 UpdateMaterials();
+                PlacementPanel.SetActive(true);
             }
+            else
+            {
+                PlacementPanel.SetActive(false);
+            }
+
+            
+
         }
+
+
 
         public void PlaceObject()
         {
+            if (!canPlace) { return; }
             pendingObject.GetComponent<MeshRenderer>().material = materials[2];
             pendingObject = null;
         }
-
+        Ray ray;
         private void FixedUpdate()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 1000, layerMask))
+
+            //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            //{
+
+            //    Vector3 fingerPos = Input.GetTouch(0).position;
+            //    Vector3 position = fingerPos;
+            //    position.z = 8;
+            //    Debug.Log("touch");
+            //    Vector3 realWorldPos = Camera.main.ScreenToWorldPoint(position);
+            //    ray = Camera.main.ScreenPointToRay(realWorldPos);
+            //    if (Physics.Raycast(ray, out hit, 1000, layerMask))
+            //    {
+            //        pos = hit.point;
+            //    }
+            //}
+
+
+            if (Input.touchCount > 0)
             {
-                pos = hit.point;
+                Touch touch = Input.GetTouch(0);
+
+                // Check if the touch hits a UI element
+                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                {
+                    // Perform raycast only if not over a UI element
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    {
+                        if (Physics.Raycast(ray, out hit, 1000, layerMask))
+                        {
+
+
+                            // Debug.Log(IsPointerOverGameObject());
+                            pos = hit.point;
+                            Debug.Log("Raycast hit: " + hit.collider.name);
+                        }
+                    }
+
+                }
+
+                // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                //if (Physics.Raycast(ray, out hit, 1000, layerMask))
+                //{
+                //    pos = hit.point;
+                //}
             }
         }
+
+        //public bool IsPointerOverGameObject()
+        //{
+        //    // Check mouse
+        //    //if (EventSystem.current.IsPointerOverGameObject())
+        //    //{
+        //    //    return true;
+        //    //}
+
+        //    // Check touches
+        //    for (int i = 0; i < Input.touchCount; i++)
+        //    {
+        //        var touch = Input.GetTouch(i);
+        //        if (touch.phase == TouchPhase.Began)
+        //        {
+        //            if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //    }
+
+        //    return false;
+        //}
+
         public void Selectobject(int index)
         {
             pendingObject = Instantiate(objects[index], pos, transform.rotation);
@@ -96,7 +175,7 @@ namespace WorldBuilder
             return pos;
         }
 
-        void RotateObject()
+        public void RotateObject()
         {
             pendingObject.transform.Rotate(Vector3.up, rotateAmount);
         }
