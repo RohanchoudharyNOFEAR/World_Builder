@@ -30,8 +30,9 @@ namespace WorldBuilder
                     {
                         if (hit.collider.gameObject.CompareTag("Object"))
                         {
-                            buildingManager.selectionPanel.SetActive(true);
-                            buildingManager.inventoryPanel.SetActive(false);
+                            //buildingManager.selectionPanel.SetActive(true);
+                         GameManager.instance.SelectionPanel.SetActive(true);
+                            GameManager.instance.InventoryPanel.SetActive(false);
                             Select(hit.collider.gameObject);
                         }
                     }
@@ -77,7 +78,7 @@ namespace WorldBuilder
 
         public void Delete()
         {
-            buildingManager.selectionPanel.SetActive(false);
+            GameManager.instance.SelectionPanel.SetActive(false);
             GameObject objToDestroy = selectedObject;
             Deselect();
             Destroy(objToDestroy);
@@ -89,7 +90,7 @@ namespace WorldBuilder
             {
                 selectedObject.GetComponent<Outline>().enabled = false;
                 selectedObject = null;
-                buildingManager.selectionPanel.SetActive(false);
+                GameManager.instance.SelectionPanel.SetActive(false);
             }
         }//DESELECT
 

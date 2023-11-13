@@ -10,9 +10,9 @@ namespace WorldBuilder
     public class WorldBuilderInterface : MonoBehaviour
     {
        
-        public GameObject inventoryPanel;
-        public GameObject selectionPanel;
-        public GameObject PlacementPanel;
+        private GameObject inventoryPanel;
+        private GameObject selectionPanel;
+        private GameObject PlacementPanel;
         public ItemsScriptableObject[] itemsCategories;
         public float gridSize;
         public float rotateAmount;
@@ -32,11 +32,17 @@ namespace WorldBuilder
         [Header("Touch")]
         private bool toPlace = false;
 
+        private void Start()
+        {
+            inventoryPanel = GameManager.instance.InventoryPanel;
+            PlacementPanel = GameManager.instance.PlacementPanel;
+            selectionPanel = GameManager.instance.SelectionPanel;
+        }
 
         void Update()
         {
             //test fixed update
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            if (Input.touchCount > 0 && (Input.GetTouch(0).phase == TouchPhase.Began|| Input.GetTouch(0).phase == TouchPhase.Moved))
             {
                 Touch touch = Input.GetTouch(0);
 
