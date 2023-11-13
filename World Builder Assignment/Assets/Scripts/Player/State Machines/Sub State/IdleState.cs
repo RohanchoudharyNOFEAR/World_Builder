@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WorldBuilder;
-using static UnityEditor.PlayerSettings;
+
 
 namespace WorldBuilder
 {

@@ -366,8 +366,16 @@
 -r:"Library/Bee/artifacts/1300b0aE.dag/UnityEngine.UI.ref.dll"
 -analyzer:"E:/Unity Editor/2022.3.11f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"E:/Unity Editor/2022.3.11f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
+"Assets/Joystick Pack/Examples/JoystickPlayerExample.cs"
+"Assets/Joystick Pack/Examples/JoystickSetterExample.cs"
+"Assets/Joystick Pack/Scripts/Base/Joystick.cs"
+"Assets/Joystick Pack/Scripts/Joysticks/DynamicJoystick.cs"
+"Assets/Joystick Pack/Scripts/Joysticks/FixedJoystick.cs"
+"Assets/Joystick Pack/Scripts/Joysticks/FloatingJoystick.cs"
+"Assets/Joystick Pack/Scripts/Joysticks/VariableJoystick.cs"
 "Assets/Package/QuickOutline/Scripts/Outline.cs"
 "Assets/Scripts/Camera/CameraMovement.cs"
+"Assets/Scripts/ItemsScriptableObject.cs"
 "Assets/Scripts/Managers/GameManager.cs"
 "Assets/Scripts/Managers/World Builder/CheckPlacement.cs"
 "Assets/Scripts/Managers/World Builder/Selection.cs"
@@ -387,6 +395,7 @@
 "Assets/Scripts/Player/State Machines/SuperState/AbilityState.cs"
 "Assets/Scripts/Player/State Machines/SuperState/GroundedState.cs"
 "Assets/Scripts/Player/State Machines/SuperState/InAirState.cs"
+"Assets/Scripts/ProceduralTerrainGenerator.cs"
 -langversion:9.0
 
 /deterministic

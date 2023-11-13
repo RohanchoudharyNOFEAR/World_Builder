@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,32 +9,38 @@ namespace WorldBuilder
 {
     public class WorldBuilderInterface : MonoBehaviour
     {
-        public GameObject[] objects;
-        public GameObject pendingObject;
-
-        private Vector3 pos;
-
-        private RaycastHit hit;
-        [SerializeField]
-        private LayerMask layerMask;
-        public float gridSize;
-        public float rotateAmount;
-        bool gridOn = true;
-
-        public bool canPlace = true;
-
+       
         public GameObject inventoryPanel;
         public GameObject selectionPanel;
         public GameObject PlacementPanel;
+        public ItemsScriptableObject[] itemsCategories;
+        public float gridSize;
+        public float rotateAmount;
+        public bool canPlace = true;
+
+        [SerializeField] private LayerMask layerMask;
         [SerializeField] private Toggle gridToggle;
         [SerializeField] private Material[] materials;
-
+        [SerializeField] private GameObject[] objects;
+        [HideInInspector] public GameObject pendingObject;      
+        private Vector3 pos;
+        private ItemsScriptableObject currentItemCategory;
+       
+        [HideInInspector]
+        private RaycastHit hit;
+        bool gridOn = true;
         [Header("Touch")]
         private bool toPlace = false;
 
 
         void Update()
         {
+
+            if (currentItemCategory != null)
+            {
+                objects = currentItemCategory.items;
+            }
+
             if (pendingObject != null)
             {
                 if (gridOn)
@@ -48,14 +55,8 @@ namespace WorldBuilder
                 {
                     pendingObject.transform.position = pos;
                 }
-                //if (Input.GetMouseButtonDown(0) && canPlace)
-                //{
-                //    PlaceObject();
-                //}
-                //if (Input.GetKeyDown(KeyCode.R))
-                //{
-                //    RotateObject();
-                //}
+
+                //OnMouseInput();
                 UpdateMaterials();
                 PlacementPanel.SetActive(true);
             }
@@ -64,37 +65,32 @@ namespace WorldBuilder
                 PlacementPanel.SetActive(false);
             }
 
-            
-
-        }
 
 
+        }//UPDATE
+
+        //void MouseInput()
+        //{
+
+        //    //if (Input.GetMouseButtonDown(0) && canPlace)
+        //    //{
+        //    //    PlaceObject();
+        //    //}
+        //    //if (Input.GetKeyDown(KeyCode.R))
+        //    //{
+        //    //    RotateObject();
+        //    //}
+        //}
 
         public void PlaceObject()
         {
             if (!canPlace) { return; }
             pendingObject.GetComponent<MeshRenderer>().material = materials[2];
             pendingObject = null;
-        }
-        Ray ray;
+        }//PLACEOBJECT
+      
         private void FixedUpdate()
         {
-
-            //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            //{
-
-            //    Vector3 fingerPos = Input.GetTouch(0).position;
-            //    Vector3 position = fingerPos;
-            //    position.z = 8;
-            //    Debug.Log("touch");
-            //    Vector3 realWorldPos = Camera.main.ScreenToWorldPoint(position);
-            //    ray = Camera.main.ScreenPointToRay(realWorldPos);
-            //    if (Physics.Raycast(ray, out hit, 1000, layerMask))
-            //    {
-            //        pos = hit.point;
-            //    }
-            //}
-
 
             if (Input.touchCount > 0)
             {
@@ -108,9 +104,6 @@ namespace WorldBuilder
                     {
                         if (Physics.Raycast(ray, out hit, 1000, layerMask))
                         {
-
-
-                            // Debug.Log(IsPointerOverGameObject());
                             pos = hit.point;
                             Debug.Log("Raycast hit: " + hit.collider.name);
                         }
@@ -118,42 +111,24 @@ namespace WorldBuilder
 
                 }
 
+                //For MouseInput
                 // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 //if (Physics.Raycast(ray, out hit, 1000, layerMask))
                 //{
                 //    pos = hit.point;
                 //}
             }
-        }
+        }//FIXED UPDATE
 
-        //public bool IsPointerOverGameObject()
-        //{
-        //    // Check mouse
-        //    //if (EventSystem.current.IsPointerOverGameObject())
-        //    //{
-        //    //    return true;
-        //    //}
-
-        //    // Check touches
-        //    for (int i = 0; i < Input.touchCount; i++)
-        //    {
-        //        var touch = Input.GetTouch(i);
-        //        if (touch.phase == TouchPhase.Began)
-        //        {
-        //            if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-        //            {
-        //                return true;
-        //            }
-        //        }
-        //    }
-
-        //    return false;
-        //}
+        public void SelectItemsCategory(int index)
+        {
+            currentItemCategory = itemsCategories[index];
+        }//Select Items Category
 
         public void Selectobject(int index)
         {
             pendingObject = Instantiate(objects[index], pos, transform.rotation);
-        }
+        }//SELECTOBJECT
 
         public void ToggleGrid()
         {
@@ -162,7 +137,8 @@ namespace WorldBuilder
                 gridOn = true;
             }
             else { gridOn = false; }
-        }
+        }//TOGGLEGRID
+
         float RoundToNearestGrid(float pos)
         {
             //Changeable grid system
@@ -173,12 +149,12 @@ namespace WorldBuilder
                 pos += gridSize;
             }
             return pos;
-        }
+        }//ROUND TO NEARESTGRID
 
         public void RotateObject()
         {
             pendingObject.transform.Rotate(Vector3.up, rotateAmount);
-        }
+        }//ROTATE
 
         public void OpenInventory()
         {
@@ -190,7 +166,7 @@ namespace WorldBuilder
                 inventoryPanel.SetActive(false);
             }
 
-        }
+        }//OPENINVENTORY
 
         void UpdateMaterials()
         {
@@ -202,7 +178,7 @@ namespace WorldBuilder
             {
                 pendingObject.GetComponent<MeshRenderer>().material = materials[1];
             }
-        }
+        }//UPDATEMATERIALS
 
     }
 }

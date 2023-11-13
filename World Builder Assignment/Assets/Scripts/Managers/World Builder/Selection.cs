@@ -8,16 +8,15 @@ using UnityEngine.EventSystems;
 namespace WorldBuilder
 {
     public class Selection : MonoBehaviour
-    {
-        public GameObject selectedObject;
-
+    {     
         public TextMeshProUGUI objNameTxt;
+        [HideInInspector] public GameObject selectedObject;
         private WorldBuilderInterface buildingManager;
 
         private void Start()
         {
             buildingManager = GameObject.Find("BuildingManager").GetComponent<WorldBuilderInterface>();
-        }
+        }//START
 
         void Update()
         {
@@ -41,7 +40,7 @@ namespace WorldBuilder
 
 
 
-
+            //FOR MOUSE INPUT
             //if (Input.GetMouseButtonDown(0))
             //{
             //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -56,13 +55,13 @@ namespace WorldBuilder
             //        }
             //    }
             //}
-
-            if (Input.GetMouseButtonDown(1) && selectedObject != null)
-            {
-                buildingManager.inventoryPanel.SetActive(false);
-                Deselect();
-            }
-        }
+            //FOR MOUSE INPUT
+            //if (Input.GetMouseButtonDown(1) && selectedObject != null)
+            //{
+            //    buildingManager.inventoryPanel.SetActive(false);
+            //    Deselect();
+            //}
+        }//UPDATE
 
         private void Select(GameObject obj)
         {
@@ -74,7 +73,7 @@ namespace WorldBuilder
             else outline.enabled = true;
             objNameTxt.text = obj.name;
             selectedObject = obj;
-        }
+        }//SELECT
 
         public void Delete()
         {
@@ -82,7 +81,7 @@ namespace WorldBuilder
             GameObject objToDestroy = selectedObject;
             Deselect();
             Destroy(objToDestroy);
-        }
+        }//DELETE
 
         public void Deselect()
         {
@@ -92,10 +91,11 @@ namespace WorldBuilder
                 selectedObject = null;
                 buildingManager.selectionPanel.SetActive(false);
             }
-        }
+        }//DESELECT
+
         public void Move()
         {
             buildingManager.pendingObject = selectedObject;
-        }
+        }//MOVE
     }
 }

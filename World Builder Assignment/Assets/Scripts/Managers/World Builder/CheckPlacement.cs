@@ -19,7 +19,7 @@ namespace WorldBuilder
             {
                 buildingManager.canPlace = false;
             }
-        }
+        }//START
 
         private void OnTriggerExit(Collider other)
         {
