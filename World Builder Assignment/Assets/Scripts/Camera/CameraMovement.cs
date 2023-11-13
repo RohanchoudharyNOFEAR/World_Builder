@@ -10,6 +10,7 @@ namespace WorldBuilder
         [Header("Camera Controller")]
         [SerializeField]
         private Transform TargetTransform;
+        private Joystick joystick;
         [SerializeField]
         private float GapZ;
         private float _rotX, _rotY;
@@ -29,13 +30,17 @@ namespace WorldBuilder
         // Start is called before the first frame update
         void Start()
         {
-
+            joystick = GameManager.instance.CameraPanJoystick.gameObject.GetComponent<Joystick>();
         }
 
         // Update is called once per frame
         void Update()
         {
             // CameraMove(playerInputs.InputMouseVector);
+            if (GameManager.instance.player.activeInHierarchy==false)
+            {
+                PanCamera();
+            }
         }
 
         public void CameraMove(Vector2 cameraInput)
@@ -51,6 +56,13 @@ namespace WorldBuilder
             var focusPosition = TargetTransform.position + new Vector3(_framingBalance.x, _framingBalance.y);
             transform.position = focusPosition - targetRotation * new Vector3(0, 0, GapZ);
             transform.rotation = targetRotation;
+        }
+
+        private void PanCamera()
+        {
+            Vector3 movementVec = new Vector3(joystick.Horizontal, 0f, joystick.Vertical);
+            transform.Translate(movementVec,Space.World);
+            
         }
     }
 }

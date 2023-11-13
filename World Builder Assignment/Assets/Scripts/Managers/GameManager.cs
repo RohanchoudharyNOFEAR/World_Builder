@@ -13,8 +13,11 @@ namespace WorldBuilder
         public GameObject playerCameraJoystick;
         public GameObject BuilderButton;
         public GameObject InventoryPanel;
+        public GameObject InventoryItemsPanel;
         public GameObject PlacementPanel;
         public GameObject SelectionPanel;
+        public GameObject CameraPanJoystick;
+
         private void Awake()
         {
             if(instance!=null && instance!=this)
@@ -30,6 +33,7 @@ namespace WorldBuilder
       
         public void Explore()
         {
+            CameraPanJoystick.SetActive(false);
             BuilderButton.SetActive(false);
             InventoryPanel.SetActive(false);
             PlacementPanel.SetActive(false);

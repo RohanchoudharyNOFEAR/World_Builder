@@ -156,6 +156,7 @@ namespace WorldBuilder
 
         public void SelectItemsCategory(int index)
         {
+            GameManager.instance.InventoryItemsPanel.SetActive(true);
             currentItemCategory = itemsCategories[index];
         }//Select Items Category
 
