@@ -35,6 +35,34 @@ namespace WorldBuilder
 
         void Update()
         {
+            //test fixed update
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                // Check if the touch hits a UI element
+                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                {
+                    // Perform raycast only if not over a UI element
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    {
+                        if (Physics.Raycast(ray, out hit, 1000, layerMask))
+                        {
+                            pos = hit.point;
+                            Debug.Log("Raycast hit: " + hit.collider.name);
+                        }
+                    }
+
+                }
+
+                //For MouseInput
+                // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                //if (Physics.Raycast(ray, out hit, 1000, layerMask))
+                //{
+                //    pos = hit.point;
+                //}
+            }//test fixed update
+
 
             if (currentItemCategory != null)
             {
@@ -89,36 +117,36 @@ namespace WorldBuilder
             pendingObject = null;
         }//PLACEOBJECT
       
-        private void FixedUpdate()
-        {
+        //private void FixedUpdate()
+        //{
 
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
+        //    if (Input.touchCount > 0)
+        //    {
+        //        Touch touch = Input.GetTouch(0);
 
-                // Check if the touch hits a UI element
-                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-                {
-                    // Perform raycast only if not over a UI element
-                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                    {
-                        if (Physics.Raycast(ray, out hit, 1000, layerMask))
-                        {
-                            pos = hit.point;
-                            Debug.Log("Raycast hit: " + hit.collider.name);
-                        }
-                    }
+        //        // Check if the touch hits a UI element
+        //        if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+        //        {
+        //            // Perform raycast only if not over a UI element
+        //            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+        //            {
+        //                if (Physics.Raycast(ray, out hit, 1000, layerMask))
+        //                {
+        //                    pos = hit.point;
+        //                    Debug.Log("Raycast hit: " + hit.collider.name);
+        //                }
+        //            }
 
-                }
+        //        }
 
-                //For MouseInput
-                // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                //if (Physics.Raycast(ray, out hit, 1000, layerMask))
-                //{
-                //    pos = hit.point;
-                //}
-            }
-        }//FIXED UPDATE
+        //        //For MouseInput
+        //        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //        //if (Physics.Raycast(ray, out hit, 1000, layerMask))
+        //        //{
+        //        //    pos = hit.point;
+        //        //}
+        //    }
+        //}//FIXED UPDATE
 
         public void SelectItemsCategory(int index)
         {
